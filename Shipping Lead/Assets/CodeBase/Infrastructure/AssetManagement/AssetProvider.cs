@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CodeBase.Infrastructure.AssetManagement
 {
-	public class AssetProvider : IAsset
+	public class AssetsProvider : IAssets
 	{
 
 		public GameObject Instantiate(string path)

@@ -1,21 +1,25 @@
 using System;
 using System.Collections.Generic;
 using CodeBase.Infrastructure.Factory;
+using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Logic;
 
-namespace CodeBase.Infrastructure
+namespace CodeBase.Infrastructure.States
 {
 	public class GameStateMachine
 	{
 		private readonly Dictionary<Type,IExitableState> _states;
 		private IExitableState _activeState;
 
-		public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain)
+		public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, AllServices allServices)
 		{
 			_states = new Dictionary<Type, IExitableState>() 
 			{
-				[typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-				[typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain),
+				[typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, allServices),
+				[typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, allServices.Single<IGameFactory>(), allServices.Single<IPersistentProgressService>()),
+				[typeof(LoadProgressState)] = new LoadProgressState(this, allServices.Single<IPersistentProgressService>(), allServices.Single<ISaveLoadService>()),
 				[typeof(GameLoopState)] = new GameLoopState(this, sceneLoader, loadingCurtain),
 			};
 		}

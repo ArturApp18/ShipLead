@@ -1,8 +1,7 @@
-using System;
 using CodeBase.Logic;
 using UnityEngine;
 
-namespace CodeBase.Infrastructure
+namespace CodeBase.Infrastructure.States
 {
 	public class GameLoopState : IState
 	{
@@ -12,7 +11,7 @@ namespace CodeBase.Infrastructure
 
 		public void Update()
 		{
-			Debug.Log(Game.InputService.Axis);
+			
 		}
 
 		public void Enter() { }
