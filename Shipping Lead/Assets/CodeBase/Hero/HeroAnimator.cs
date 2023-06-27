@@ -7,8 +7,8 @@ namespace CodeBase.Hero
     public class HeroAnimator : MonoBehaviour, IAnimationStateReader
     {
         private static readonly int MoveHash = Animator.StringToHash("Walking");
-        private static readonly int AttackHash = Animator.StringToHash("AttackNormal");
-        private static readonly int HitHash = Animator.StringToHash("Hit");
+        private static readonly int AttackHash = Animator.StringToHash("Attack");
+        private static readonly int  HitHash = Animator.StringToHash("Hit");
         private static readonly int DieHash = Animator.StringToHash("Die");
 
         private readonly int _idleStateHash = Animator.StringToHash("Idle");

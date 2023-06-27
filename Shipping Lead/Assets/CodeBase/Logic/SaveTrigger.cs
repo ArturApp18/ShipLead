@@ -10,6 +10,7 @@ namespace CodeBase.Logic
 		private IPersistentProgressService _progressService;
 		private ISaveLoadService _saveLoadService;
 		public BoxCollider2D Collider;
+		public bool IsSaved;
 
 		private void Awake()
 		{
@@ -19,10 +20,14 @@ namespace CodeBase.Logic
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			_saveLoadService.SaveProgress();
-			Debug.Log("Progress Saved");
-			gameObject.SetActive(false);
+		
+				_saveLoadService.SaveProgress();
+				Debug.Log("Progress Saved");
+				gameObject.SetActive(false);
+			
+
 		}
+
 
 		private void OnDrawGizmos()
 		{

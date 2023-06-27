@@ -5,15 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerInitialPoint
+  - Mob
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
+  - EnemyAggro
+  - EnemyAttackZone
   - 
   - 
   - 

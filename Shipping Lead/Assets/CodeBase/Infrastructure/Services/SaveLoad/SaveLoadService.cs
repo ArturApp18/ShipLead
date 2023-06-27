@@ -9,6 +9,7 @@ namespace CodeBase.Infrastructure.Services.SaveLoad
 	{
 		private readonly IPersistentProgressService _progressService;
 		private readonly IGameFactory _gameFactory;
+		private bool _isSaved;
 		private const string ProgressKey = "ProgressKey";
 
 		public SaveLoadService(IPersistentProgressService progressService, IGameFactory gameFactory)
@@ -21,9 +22,11 @@ namespace CodeBase.Infrastructure.Services.SaveLoad
 		{
 			foreach (ISavedProgress progressWriter in _gameFactory.ProgressWriters)
 				progressWriter.UpdateProgress(_progressService.Progress);
-			
+
 			PlayerPrefs.SetString(ProgressKey, _progressService.Progress.ToJson());
 		}
+
+
 
 		public PlayerProgress LoadProgress() =>
 			PlayerPrefs.GetString(ProgressKey)?
