@@ -6,7 +6,7 @@ namespace CodeBase.Infrastructure.Services.Input
 	{
 		protected const string Horizontal = "Horizontal";
 		protected const string Vertical = "Vertical";
-		private const string Fire = "Fire";
+		private const string Fire = "Fire1";
 
 		public abstract Vector2 Axis { get; }
 

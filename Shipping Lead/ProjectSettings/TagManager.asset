@@ -6,6 +6,9 @@ TagManager:
   tags:
   - PlayerInitialPoint
   - Mob
+  - FxTemporaire
+  - EnemySpawner
+  - SaveTrigger
   layers:
   - Default
   - TransparentFX
@@ -15,8 +18,8 @@ TagManager:
   - UI
   - EnemyAggro
   - EnemyAttackZone
-  - 
-  - 
+  - Hittable
+  - SaveTriggers
   - 
   - 
   - 

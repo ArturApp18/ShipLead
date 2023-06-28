@@ -1,14 +1,16 @@
+using System;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.Input;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SaveLoad;
+using CodeBase.Infrastructure.Services.StaticData;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.States
 {
-	public class BootstrapState : IState
+	public class BootstrapState : IState, IDisposable
 	{
 		private const string Initial = "Initial";
 		private readonly GameStateMachine _stateMachine;
@@ -24,11 +26,8 @@ namespace CodeBase.Infrastructure.States
 			RegisterServices();
 		}
 
-		public void Enter()
-		{
-			
+		public void Enter() =>
 			_sceneLoader.Load(Initial, onLoaded: EnterLoadLevel);
-		}
 
 		public void Exit()
 		{
@@ -45,11 +44,20 @@ namespace CodeBase.Infrastructure.States
 
 		private void RegisterServices()
 		{
-			_services.RegisterSingle<IInputService>(InputServices());
+			RegisterStaticData();
+			_services.RegisterSingle(InputServices());
 			_services.RegisterSingle<IAssets>(new AssetsProvider());
 			_services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
-			_services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssets>()));
+			_services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssets>(), _services.Single<IStaticDataService>()));
 			_services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
+		}
+
+		private void RegisterStaticData()
+		{
+			IStaticDataService staticData = new StaticDataService();
+			staticData.LoadMonsters();
+			staticData.LoadHero();
+			_services.RegisterSingle(staticData);
 		}
 
 		private IInputService InputServices()
@@ -57,6 +65,11 @@ namespace CodeBase.Infrastructure.States
 			return Application.isEditor 
 				? new StandaloneInputService() 
 				: new MobileInputService();
+		}
+
+		public void Dispose()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

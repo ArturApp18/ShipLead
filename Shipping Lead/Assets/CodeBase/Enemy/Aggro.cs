@@ -30,6 +30,7 @@ namespace CodeBase.Enemy
 				StopAggroCoroutine();
 
 				SwitchFollowOn();
+				Debug.Log("MoveEnemy");
 			}
 		}
 

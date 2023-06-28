@@ -12,18 +12,11 @@ namespace CodeBase.Enemy
 		public float Speed;
 
 		private Transform _heroTransform;
-		private IGameFactory _gameFactory;
 		private Vector2 _positionToLook;
 
-		private void Start()
-		{
-			_gameFactory = AllServices.Container.Single<IGameFactory>();
-
-			if (HeroExists())
-				InitializeTransform();
-			else
-				_gameFactory.HeroCreated += InitializeTransform;
-		}
+		public void Construct(Transform heroTransform) =>
+			_heroTransform = heroTransform;
+		
 
 		private void Update()
 		{
@@ -62,13 +55,6 @@ namespace CodeBase.Enemy
 
 		private bool Initialized() =>
 			_heroTransform != null;
-
-		private void InitializeTransform() =>
-			_heroTransform = _gameFactory.HeroGameObject.transform;
-
-		private bool HeroExists() =>
-			_gameFactory.HeroGameObject != null;
-
 
 	}
 

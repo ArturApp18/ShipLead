@@ -29,7 +29,7 @@ namespace CodeBase.Hero
 
 		private void Update()
 		{
-			if (_input.IsAttackButtonUp() && _heroAnimator.IsAttacking)
+			if (_input.IsAttackButtonUp() && !_heroAnimator.IsAttacking)
 				_heroAnimator.PlayAttack();
 		}
 

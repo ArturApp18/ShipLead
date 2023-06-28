@@ -11,9 +11,10 @@ namespace CodeBase.Infrastructure.States
 	public class LoadLevelState : IPayloadedState<string>
 	{
 		private const string PlayerInitialPoint = "PlayerInitialPoint";
-		
-	
-		
+		private const string SaveTrigger = "SaveTrigger";
+		private const string EnemySpawner = "EnemySpawner";
+
+
 		private readonly GameStateMachine _gameStateMachine;
 		private readonly SceneLoader _sceneLoader;
 		private readonly LoadingCurtain _loadingCurtain;
@@ -29,6 +30,8 @@ namespace CodeBase.Infrastructure.States
 			_progressService = progressService;
 		}
 
+		public void Update() { }
+
 		public void Enter(string sceneName)
 		{
 			_loadingCurtain.Show();
@@ -41,7 +44,43 @@ namespace CodeBase.Infrastructure.States
 			_loadingCurtain.Hide();
 		}
 
-		public void Update() { }
+		private void InitHud(GameObject hero)
+		{
+			GameObject hud = _gameFactory.CreateHud();
+
+			hud.GetComponentInChildren<ActorUI>()
+				.Construct(hero.GetComponent<HeroHealth>());
+		}
+
+		private void InitGameWorld()
+		{
+			InitSpawners();
+			InitSaveTriggers();
+			
+			GameObject hero = _gameFactory.CreateHero(at: GameObject.FindWithTag(PlayerInitialPoint));
+
+			InitHud(hero);
+
+			CameraFollow(hero);
+		}
+
+		private void InitSaveTriggers()
+		{
+			foreach (GameObject saveTrigger in GameObject.FindGameObjectsWithTag(SaveTrigger))
+			{
+				SaveTrigger trigger = saveTrigger.GetComponent<SaveTrigger>();
+				_gameFactory.Register(trigger);
+			}
+		}
+
+		private void InitSpawners()
+		{
+			foreach (GameObject enemySpawner in GameObject.FindGameObjectsWithTag(EnemySpawner))
+			{
+				EnemySpawner spawner = enemySpawner.GetComponent<EnemySpawner>();
+				_gameFactory.Register(spawner);
+			}
+		}
 
 		private void OnLoaded()
 		{
@@ -55,23 +94,6 @@ namespace CodeBase.Infrastructure.States
 		{
 			foreach (ISavedProgressReader progressReader in _gameFactory.ProgressReaders)
 				progressReader.LoadProgress(_progressService.Progress);
-		}
-
-		private void InitGameWorld()
-		{
-			GameObject hero = _gameFactory.CreateHero(at: GameObject.FindWithTag(PlayerInitialPoint));
-
-			InitHud(hero);
-
-			CameraFollow(hero);
-		}
-
-		private void InitHud(GameObject hero)
-		{
-			GameObject hud = _gameFactory.CreateHud();
-
-			hud.GetComponentInChildren<ActorUI>()
-				.Construct(hero.GetComponent<HeroHealth>());
 		}
 
 		private void CameraFollow(GameObject hero)

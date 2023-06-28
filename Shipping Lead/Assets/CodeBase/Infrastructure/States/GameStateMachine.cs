@@ -4,35 +4,38 @@ using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SaveLoad;
+using CodeBase.Infrastructure.Services.StaticData;
 using CodeBase.Logic;
 
 namespace CodeBase.Infrastructure.States
 {
 	public class GameStateMachine
 	{
-		private readonly Dictionary<Type,IExitableState> _states;
+		private readonly Dictionary<Type, IExitableState> _states;
 		private IExitableState _activeState;
 
 		public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, AllServices allServices)
 		{
-			_states = new Dictionary<Type, IExitableState>() 
-			{
+			_states = new Dictionary<Type, IExitableState>() {
 				[typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, allServices),
-				[typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, allServices.Single<IGameFactory>(), allServices.Single<IPersistentProgressService>()),
-				[typeof(LoadProgressState)] = new LoadProgressState(this, allServices.Single<IPersistentProgressService>(), allServices.Single<ISaveLoadService>()),
+				[typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, allServices.Single<IGameFactory>(),
+					allServices.Single<IPersistentProgressService>()),
+				[typeof(LoadProgressState)] = new LoadProgressState(this, allServices.Single<IPersistentProgressService>(), allServices.Single<ISaveLoadService>(),
+					allServices.Single<IStaticDataService>()),
 				[typeof(GameLoopState)] = new GameLoopState(this, sceneLoader, loadingCurtain),
 			};
 		}
+
 		public void Enter<TState>() where TState : class, IState
 		{
 			IState state = ChangeState<TState>();
 			state.Enter();
 		}
 
-		public void Enter<TState, TPayload>(TPayload payload) where TState :class,  IPayloadedState<TPayload>
+		public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>
 		{
 			TState state = ChangeState<TState>();
-			
+
 			state.Enter(payload);
 		}
 
@@ -44,10 +47,10 @@ namespace CodeBase.Infrastructure.States
 		private TState ChangeState<TState>() where TState : class, IExitableState
 		{
 			_activeState?.Exit();
-			
+
 			TState state = GetState<TState>();
 			_activeState = state;
-			
+
 			return state;
 		}
 
@@ -56,4 +59,4 @@ namespace CodeBase.Infrastructure.States
 
 	}
 
-} 
+}

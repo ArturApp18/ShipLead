@@ -10,7 +10,9 @@ namespace CodeBase.Enemy
 	{
 		[SerializeField] private EnemyAnimator _animator;
 		[SerializeField] private EnemyHealth _health;
-
+		[SerializeField] private MoveToHero _move;
+		[SerializeField] private EnemyAttack _attack;
+		[SerializeField] private GameObject _aggro;
 		[SerializeField] private GameObject DeathFx;
 		[SerializeField] private float _destroyTimer;
 
@@ -35,13 +37,22 @@ namespace CodeBase.Enemy
 		private void Die()
 		{
 			_health.HealthChanged -= HealthChanged;
-			
+
+			StopFollowing();
+
 			_animator.PlayDeath();
 
 			SpawnDeathFx();
 			StartCoroutine(DestroyTimer());
 			
 			Happend?.Invoke();
+		}
+
+		private void StopFollowing()
+		{
+			_aggro.SetActive(false);
+			_move.enabled = false;
+			_attack.enabled = false;
 		}
 
 		private void SpawnDeathFx() =>

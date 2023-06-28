@@ -1,10 +1,6 @@
-using System;
 using System.Linq;
-using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Logic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace CodeBase.Enemy
@@ -18,8 +14,7 @@ namespace CodeBase.Enemy
 		public float Cleavage = 0.5f;
 		public float EffectiveDistance = 0.5f;
 		public float Damage = 10;
-
-		private IGameFactory _gameFactory;
+		
 		private Transform _heroTransform;
 		private float _attackCoolDown;
 		private bool _isAttacking;
@@ -28,11 +23,12 @@ namespace CodeBase.Enemy
 
 		private bool _attackIsActive;
 
+		public void Construct(Transform heroTransform) =>
+			_heroTransform = heroTransform;
+
 		private void Awake()
 		{
-			_gameFactory = AllServices.Container.Single<IGameFactory>();
 			_layerMask = 1 << LayerMask.NameToLayer("Player");
-			_gameFactory.HeroCreated += OnHeroCreated;
 		}
 
 		private void Update()
@@ -79,28 +75,21 @@ namespace CodeBase.Enemy
 				_attackCoolDown -= Time.deltaTime;
 		}
 
-		private Vector3 StartPoint()
-		{
-			return new Vector3(transform.position.x, transform.position.y + 0.5f) + -transform.right * EffectiveDistance;
-		}
+		private Vector3 StartPoint() =>
+			new Vector3(transform.position.x, transform.position.y + 0.5f) + -transform.right * EffectiveDistance;
 
 		private void StartAttack()
 		{
-			//transform.LookAt(_heroTransform);
 			Animator.PlayAttack();
 
 			_isAttacking = true;
 		}
 
 		private bool CanAttack() =>
-			_attackIsActive && !_isAttacking && CooldownIsUp();
+			!_attackIsActive && !_isAttacking && CooldownIsUp();
 
 		private bool CooldownIsUp() =>
 			_attackCoolDown <= 0f;
 
-		private void OnHeroCreated() =>
-			_heroTransform = _gameFactory.HeroGameObject.transform;
-
 	}
-
 }
