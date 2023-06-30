@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: BrownBug
   m_EditorClassIdentifier: 
   MonsterTypeId: 0
+  MaxLoot: 1
+  MinLoot: 7
   Hp: 100
   Damage: 7.6
   MoveSpeed: 3.9

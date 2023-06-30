@@ -4,6 +4,7 @@ using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.Input;
 using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.Randomizer;
 using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Infrastructure.Services.StaticData;
 using UnityEngine;
@@ -22,17 +23,14 @@ namespace CodeBase.Infrastructure.States
 			_stateMachine = stateMachine;
 			_sceneLoader = sceneLoader;
 			_services = services;
-			
+
 			RegisterServices();
 		}
 
 		public void Enter() =>
 			_sceneLoader.Load(Initial, onLoaded: EnterLoadLevel);
 
-		public void Exit()
-		{
-			
-		}
+		public void Exit() { }
 
 		public void Update()
 		{
@@ -45,11 +43,20 @@ namespace CodeBase.Infrastructure.States
 		private void RegisterServices()
 		{
 			RegisterStaticData();
+			RegisterRandomService();
 			_services.RegisterSingle(InputServices());
 			_services.RegisterSingle<IAssets>(new AssetsProvider());
 			_services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
-			_services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssets>(), _services.Single<IStaticDataService>()));
+			_services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssets>(), _services.Single<IStaticDataService>(), _services.Single<IRandomService>(),
+				_services.Single<IPersistentProgressService>()));
+
 			_services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
+		}
+
+		private void RegisterRandomService()
+		{
+			IRandomService randomService = new UnityRandomService();
+			_services.RegisterSingle(randomService);
 		}
 
 		private void RegisterStaticData()
@@ -62,8 +69,8 @@ namespace CodeBase.Infrastructure.States
 
 		private IInputService InputServices()
 		{
-			return Application.isEditor 
-				? new StandaloneInputService() 
+			return Application.isEditor
+				? new StandaloneInputService()
 				: new MobileInputService();
 		}
 
@@ -72,4 +79,5 @@ namespace CodeBase.Infrastructure.States
 			throw new NotImplementedException();
 		}
 	}
+
 }

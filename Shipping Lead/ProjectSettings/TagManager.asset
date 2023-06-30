@@ -20,7 +20,7 @@ TagManager:
   - EnemyAttackZone
   - Hittable
   - SaveTriggers
-  - 
+  - PickUp
   - 
   - 
   - 

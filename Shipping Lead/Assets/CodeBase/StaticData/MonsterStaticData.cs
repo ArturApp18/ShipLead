@@ -8,13 +8,17 @@ namespace CodeBase.StaticData
 	{
 		public MonsterTypeId MonsterTypeId;
 		
+		public int MaxLoot;
+		
+		public int MinLoot;
+		
 		[Range(1, 100)]
 		public int Hp;
 		
 		[Range(1, 30)]
 		public float Damage;
 		
-		[Range(1, 30)]
+		[Range(1, 10)]
 		public float MoveSpeed;
 
 		[Range(0.5f, 1)]
