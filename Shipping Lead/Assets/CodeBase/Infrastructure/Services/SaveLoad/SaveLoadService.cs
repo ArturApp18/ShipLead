@@ -7,10 +7,11 @@ namespace CodeBase.Infrastructure.Services.SaveLoad
 {
 	public class SaveLoadService : ISaveLoadService
 	{
+		private const string ProgressKey = "ProgressKey";
+		
 		private readonly IPersistentProgressService _progressService;
 		private readonly IGameFactory _gameFactory;
-		private bool _isSaved;
-		private const string ProgressKey = "ProgressKey";
+
 
 		public SaveLoadService(IPersistentProgressService progressService, IGameFactory gameFactory)
 		{

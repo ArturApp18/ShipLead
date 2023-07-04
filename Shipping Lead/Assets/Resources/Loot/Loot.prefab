@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 804383933
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f51b006d460a74c4ca26fcf53e00d913, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -95,9 +95,10 @@ GameObject:
   - component: {fileID: 3431986867066823476}
   - component: {fileID: 9010968755209296923}
   - component: {fileID: 559366549077160366}
+  - component: {fileID: 8894436376528026180}
   m_Layer: 10
   m_Name: Loot
-  m_TagString: Untagged
+  m_TagString: Loot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -163,6 +164,19 @@ MonoBehaviour:
   LootText: {fileID: 4771559175262085551}
   PickUpPopup: {fileID: 1511912268548631174}
   _destroyTimer: 1.5
+--- !u!114 &8894436376528026180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3162196134524566502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 014d593c684343fc879b7e35e5593148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: Loot_375c329d-f3ac-499b-8a41-b94a3510c90b
 --- !u!1001 &1103274131878921148
 PrefabInstance:
   m_ObjectHideFlags: 0

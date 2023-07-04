@@ -3,10 +3,14 @@ using CodeBase.Enemy;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.Randomizer;
+using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Infrastructure.Services.StaticData;
-using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
+using CodeBase.Logic.EnemySpawners;
 using CodeBase.StaticData;
+using CodeBase.UI;
+using CodeBase.UI.Elements;
+using CodeBase.UI.Services.Windows;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -20,33 +24,43 @@ namespace CodeBase.Infrastructure.Factory
 		private readonly IStaticDataService _staticData;
 		private readonly IRandomService _randomService;
 		private readonly IPersistentProgressService _progressService;
+		private readonly ISaveLoadService _saveLoadService;
+		private readonly IWindowService _windowService;
 
 		public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
 		public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
 		private GameObject HeroGameObject { get; set; }
 
-		public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService, IPersistentProgressService progressService)
+		public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService, IPersistentProgressService progressService, IWindowService windowService)
 		{
 			_assets = assets;
 			_staticData = staticData;
 			_randomService = randomService;
 			_progressService = progressService;
+			_windowService = windowService;
 		}
 
 		public GameObject CreateHero(GameObject at)
 		{
-			//HeroStaticData heroData = _staticData.ForHero();
 			HeroGameObject = InstantiateRegistered(AssetPath.HeroPath, at.transform.position);
-
-			//var health = HeroGameObject.GetComponent<IHealth>();
-			//health.Current = heroData.Hp;
-			//health.Max = heroData.Hp;
+			
 			return HeroGameObject;
 		}
 
-		public GameObject CreateHud() =>
-			InstantiateRegistered(AssetPath.HUDPath);
+		public GameObject CreateHud()
+		{
+			GameObject hud = InstantiateRegistered(AssetPath.HUDPath);
+
+			
+			hud.GetComponentInChildren<LootCounter>()
+				.Construct(_progressService.Progress.WorldData);
+			foreach (OpenWindowButton openWindowButton in hud.GetComponentsInChildren<OpenWindowButton>())
+			{
+				openWindowButton.Construct(_windowService);
+			}
+			return hud;
+		}
 
 		public GameObject CreateMonster(MonsterTypeId typeId, Transform parent)
 		{
@@ -62,8 +76,10 @@ namespace CodeBase.Infrastructure.Factory
 
 			LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
 			lootSpawner.SetLoot(monsterData.MinLoot, monsterData.MaxLoot);
+
 			lootSpawner.Construct(this, _randomService);
-			
+
+
 			EnemyAttack attack = monster.GetComponent<EnemyAttack>();
 			attack.Construct(HeroGameObject.transform);
 			attack.Damage = monsterData.Damage;
@@ -72,17 +88,36 @@ namespace CodeBase.Infrastructure.Factory
 
 			monster.GetComponent<RotateToHero>()?.Construct(HeroGameObject.transform);
 
-		
+
 			return monster;
 		}
 
 		public LootPiece CreateLoot()
 		{
 			LootPiece lootPiece = InstantiateRegistered(AssetPath.LootPath).GetComponent<LootPiece>();
-			
-			lootPiece.Construct(_progressService.Progress.WorldData);
+			string id = lootPiece.GetComponent<UniqueId>().Id;
+			lootPiece.Construct(_progressService.Progress.WorldData, id);
 
 			return lootPiece;
+		}
+
+		public void CreateSpawner(Vector2 at, string spawnerId, MonsterTypeId monsterTypeId)
+		{
+			EnemySpawnPoint spawner = InstantiateRegistered(AssetPath.SpawnerPath, at)
+				.GetComponent<EnemySpawnPoint>();
+
+			spawner.Construct(this);
+			spawner.Id = spawnerId;
+			spawner.MonsterTypeId = monsterTypeId;
+		}
+
+		public SaveTrigger CreateSaveTrigger(Vector2 at, string saveTriggerId)
+		{
+			SaveTrigger saveTrigger = InstantiateRegistered(AssetPath.SaveTriggerPath, at)
+				.GetComponent<SaveTrigger>();
+			
+			saveTrigger.Id = saveTriggerId;
+			return saveTrigger;
 		}
 
 		public void Cleanup()

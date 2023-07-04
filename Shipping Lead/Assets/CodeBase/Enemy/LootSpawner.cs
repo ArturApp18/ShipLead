@@ -1,5 +1,6 @@
 using CodeBase.Data;
 using CodeBase.Infrastructure.Factory;
+using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.Randomizer;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace CodeBase.Enemy
 			_factory = factory;
 			_random = random;
 		}
+
 		private void Start()
 		{
 			_enemyDeath.Happend += SpawnLoot;
@@ -35,8 +37,7 @@ namespace CodeBase.Enemy
 
 		private Loot GenerateLoot()
 		{
-			return new Loot 
-			{
+			return new Loot {
 				Value = _random.Next(_lootMin, _lootMax),
 			};
 		}
@@ -46,7 +47,6 @@ namespace CodeBase.Enemy
 			_lootMin = min;
 			_lootMax = max;
 		}
-
 	}
 
 }

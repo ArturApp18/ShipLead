@@ -7,8 +7,8 @@ TagManager:
   - PlayerInitialPoint
   - Mob
   - FxTemporaire
-  - EnemySpawner
   - SaveTrigger
+  - Loot
   layers:
   - Default
   - TransparentFX
@@ -45,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Loot
+    uniqueID: 804383933
     locked: 0

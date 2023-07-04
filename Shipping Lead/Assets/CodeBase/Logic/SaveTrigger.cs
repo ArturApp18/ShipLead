@@ -1,5 +1,4 @@
-﻿using System;
-using CodeBase.Data;
+﻿using CodeBase.Data;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SaveLoad;
@@ -12,24 +11,31 @@ namespace CodeBase.Logic
 		private ISaveLoadService _saveLoadService;
 		public BoxCollider2D Collider;
 
-		private string _id;
-
-		public bool _saved;
-
-		private void Awake()
+		public string Id { get; set; }
+		public bool Saved
 		{
-			AllServices.Container.Single<IPersistentProgressService>();
-			_saveLoadService = AllServices.Container.Single<ISaveLoadService>();
+			get
+			{
+				return _saved;
+			}
+			set
+			{
+				_saved = value;
+			}
+		}
 
-			_id = GetComponent<UniqueId>().Id;
+		private bool _saved;
+
+		public void Construct(ISaveLoadService saveLoadService)
+		{
+			_saveLoadService = saveLoadService;
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-
-			if (!_saved)
+			if (!Saved)
 			{
-				_saved = true;
+				Saved = true;
 				_saveLoadService.SaveProgress();
 				Debug.Log("Progress Saved");
 				gameObject.SetActive(false);
@@ -48,16 +54,15 @@ namespace CodeBase.Logic
 
 		public void LoadProgress(PlayerProgress progress)
 		{
-			if (progress.SaveData.SavedTriggers.Contains(_id))
-			{
-				_saved = true;
-			}
+			if (progress.SaveData.SavedTriggers.Contains(Id))
+				Saved = true;
 		}
 
 		public void UpdateProgress(PlayerProgress progress)
 		{
-			if (_saved)
-				progress.SaveData.SavedTriggers.Add(_id);
+			if (Saved)
+				progress.SaveData.SavedTriggers.Add(Id);
 		}
+
 	}
 }

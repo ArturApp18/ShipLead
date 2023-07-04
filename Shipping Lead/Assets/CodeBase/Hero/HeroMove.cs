@@ -58,7 +58,7 @@ namespace CodeBase.Hero
 		private void Warp(Vector3Data to) =>
 			transform.position = to.AsUnityVector().AddY(_heroCollider.size.y);
 
-		private static string CurrentLevel() =>
+		private string CurrentLevel() =>
 			SceneManager.GetActiveScene().name;
 	}
 
