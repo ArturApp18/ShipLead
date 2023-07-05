@@ -10,7 +10,14 @@ using CodeBase.UI.Services.Factory;
 
 namespace CodeBase.Infrastructure.States
 {
-	public class GameStateMachine
+	public interface IGameStateMachine : IService
+	{
+		void Enter<TState>() where TState : class, IState;
+		void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>;
+		void Update();
+	}
+
+	public class GameStateMachine : IGameStateMachine
 	{
 		private readonly Dictionary<Type, IExitableState> _states;
 		private IExitableState _activeState;

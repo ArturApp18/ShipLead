@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b427055e29425bb386a999826400b1, type: 3}
-  m_Name: LevelData
+  m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
+  m_Name: Default Local Group_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  LevelKey: 
-  EnemySpawners: []
-  SaveTriggers: []
-  LevelTransfers: []
-  InitialHeroPosition: {x: 0, y: 0, z: 0}
+  m_Group: {fileID: 11400000, guid: b19cd350b7e675342a2b0d240018e36c, type: 2}
+  m_StaticContent: 0

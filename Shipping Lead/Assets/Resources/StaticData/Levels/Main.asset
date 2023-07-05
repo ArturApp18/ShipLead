@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67b427055e29425bb386a999826400b1, type: 3}
-  m_Name: Jungle
+  m_Name: Main
   m_EditorClassIdentifier: 
-  LevelKey: Jungle
+  LevelKey: Main
   EnemySpawners:
   - Id: SpawnMarker_cd34059d-7e35-425b-8db0-41dff9ad4b09
     MonsterTypeId: 0
-    Position: {x: -5.13, y: -0.04}
+    Position: {x: -5.31, y: -1.14}
   SaveTriggers:
   - Position: {x: 2.75, y: -1}
     Id: Main_ebc8a71e-5592-4053-8f89-b9e4c3c77144
   LevelTransfers:
-  - Position: {x: 7.85, y: -1.83}
+  - Position: {x: 5.91, y: -1.84}
     Id: Jungle_74a39678-6bf5-412e-963e-5691b6e3ddeb
-    TransferTo: Main
+    TransferTo: Jungle
   InitialHeroPosition: {x: -0.36, y: -0.24, z: -0.026744563}

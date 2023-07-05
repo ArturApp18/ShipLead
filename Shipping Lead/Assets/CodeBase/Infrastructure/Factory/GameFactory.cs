@@ -5,6 +5,7 @@ using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.Randomizer;
 using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Infrastructure.Services.StaticData;
+using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using CodeBase.Logic.EnemySpawners;
 using CodeBase.StaticData;
@@ -26,25 +27,28 @@ namespace CodeBase.Infrastructure.Factory
 		private readonly IPersistentProgressService _progressService;
 		private readonly ISaveLoadService _saveLoadService;
 		private readonly IWindowService _windowService;
+		private readonly IGameStateMachine _gameStateMachine;
 
 		public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
 		public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
 		private GameObject HeroGameObject { get; set; }
 
-		public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService, IPersistentProgressService progressService, IWindowService windowService)
+		public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService, IPersistentProgressService progressService,
+			IWindowService windowService, IGameStateMachine gameStateMachine)
 		{
 			_assets = assets;
 			_staticData = staticData;
 			_randomService = randomService;
 			_progressService = progressService;
 			_windowService = windowService;
+			_gameStateMachine = gameStateMachine;
 		}
 
-		public GameObject CreateHero(GameObject at)
+		public GameObject CreateHero(Vector3 at)
 		{
-			HeroGameObject = InstantiateRegistered(AssetPath.HeroPath, at.transform.position);
-			
+			HeroGameObject = InstantiateRegistered(AssetPath.HeroPath, at);
+
 			return HeroGameObject;
 		}
 
@@ -52,13 +56,15 @@ namespace CodeBase.Infrastructure.Factory
 		{
 			GameObject hud = InstantiateRegistered(AssetPath.HUDPath);
 
-			
+
 			hud.GetComponentInChildren<LootCounter>()
 				.Construct(_progressService.Progress.WorldData);
+
 			foreach (OpenWindowButton openWindowButton in hud.GetComponentsInChildren<OpenWindowButton>())
 			{
 				openWindowButton.Construct(_windowService);
 			}
+
 			return hud;
 		}
 
@@ -101,6 +107,16 @@ namespace CodeBase.Infrastructure.Factory
 			return lootPiece;
 		}
 
+		public LevelTransferTrigger CreateLevelTransferTrigger(Vector2 at, string levelTransferId, string transferTo)
+		{
+			LevelTransferTrigger levelTransferTrigger = InstantiateRegistered(AssetPath.LevelTransferPath, at)
+				.GetComponent<LevelTransferTrigger>();
+
+			levelTransferTrigger.Construct(_gameStateMachine);
+			levelTransferTrigger.TransfeTo = transferTo;
+			return levelTransferTrigger;
+		}
+
 		public void CreateSpawner(Vector2 at, string spawnerId, MonsterTypeId monsterTypeId)
 		{
 			EnemySpawnPoint spawner = InstantiateRegistered(AssetPath.SpawnerPath, at)
@@ -115,7 +131,7 @@ namespace CodeBase.Infrastructure.Factory
 		{
 			SaveTrigger saveTrigger = InstantiateRegistered(AssetPath.SaveTriggerPath, at)
 				.GetComponent<SaveTrigger>();
-			
+
 			saveTrigger.Id = saveTriggerId;
 			return saveTrigger;
 		}

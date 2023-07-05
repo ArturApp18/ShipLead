@@ -18,7 +18,7 @@ namespace CodeBase.Infrastructure.States
 {
 	public class LoadLevelState : IPayloadedState<string>
 	{
-		private const string PlayerInitialPoint = "PlayerInitialPoint";
+		
 		private const string SaveTrigger = "SaveTrigger";
 		private const string EnemySpawner = "EnemySpawners";
 		private const string Loot = "Loot";
@@ -71,20 +71,18 @@ namespace CodeBase.Infrastructure.States
 
 		private void InitGameWorld()
 		{
-			InitSpawners();
-			InitSaveTriggers();
-
+			LevelStaticData levelData = GetLevelStaticData();
+			InitSpawners(levelData);
+			InitSaveTriggers(levelData);
+			InitLevelTransfers(levelData);
 			InitLoot();
-
-			GameObject hero = InitHero();
-
+			GameObject hero = InitHero(levelData);
 			InitHud(hero);
-
 			CameraFollow(hero);
 		}
 
-		private GameObject InitHero() =>
-			_gameFactory.CreateHero(at: GameObject.FindWithTag(PlayerInitialPoint));
+		private GameObject InitHero(LevelStaticData levelData) =>
+			_gameFactory.CreateHero(levelData.InitialHeroPosition);
 
 		private void InitLoot()
 		{
@@ -97,9 +95,9 @@ namespace CodeBase.Infrastructure.States
 			}
 		}
 
-		private void InitSaveTriggers()
+		private void InitSaveTriggers(LevelStaticData levelData)
 		{
-			LevelStaticData levelData = GetLevelStaticData();
+			
 			
 			foreach (SaveTriggerData saveTriggerData in levelData.SaveTriggers)
 			{
@@ -108,21 +106,21 @@ namespace CodeBase.Infrastructure.States
 			}
 		}
 
-		private void InitSpawners()
+		private void InitLevelTransfers(LevelStaticData levelData)
 		{
-			LevelStaticData levelData = GetLevelStaticData();
-			
+			foreach (LevelTransferTriggerData levelTransfer in levelData.LevelTransfers)
+			{
+				LevelTransferTrigger levelTransferTrigger = _gameFactory.CreateLevelTransferTrigger(levelTransfer.Position, levelTransfer.Id, levelTransfer.TransferTo);
+			}
+		}
+
+		private void InitSpawners(LevelStaticData levelData)
+		{
+
 			foreach (EnemySpawnerData spawnerData in levelData.EnemySpawners)
 			{
 				_gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
 			}
-		}
-
-		private LevelStaticData GetLevelStaticData()
-		{
-			string sceneKey = SceneManager.GetActiveScene().name;
-			LevelStaticData levelData = _staticData.ForLevel(sceneKey);
-			return levelData;
 		}
 
 		private void OnLoaded()
@@ -143,12 +141,13 @@ namespace CodeBase.Infrastructure.States
 				progressReader.LoadProgress(_progressService.Progress);
 		}
 
-		private void CameraFollow(GameObject hero)
-		{
+		private void CameraFollow(GameObject hero) =>
 			Camera.main
 				.GetComponent<CameraFollow>()
 				.Follow(hero);
-		}
+
+		private LevelStaticData GetLevelStaticData() =>
+			_staticData.ForLevel(SceneManager.GetActiveScene().name);
 
 	}
 }

@@ -4,16 +4,17 @@ using UnityEngine;
 namespace CodeBase.StaticData
 {
 	[Serializable]
-	public class SaveTriggerData
+	public class LevelTransferTriggerData
 	{
 		public Vector2 Position;
 		public string Id;
+		public string TransferTo;
 
-		public SaveTriggerData(string id, Vector2 position)
+
+		public LevelTransferTriggerData(string id, Vector2 position)
 		{
 			Id = id;
 			Position = position;
 		}
 	}
-
 }
