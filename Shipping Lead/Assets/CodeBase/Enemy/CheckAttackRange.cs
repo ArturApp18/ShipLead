@@ -19,12 +19,12 @@ namespace CodeBase.Enemy
 
 		private void TriggerExit(Collider2D obj)
 		{
-			Attack.EnableAttack();
+			Attack.DisableAttack();
 		}
 
 		private void TriggerEnter(Collider2D obj)
 		{
-			Attack.DisableAttack();
+			Attack.EnableAttack();
 		}
 	}
 }

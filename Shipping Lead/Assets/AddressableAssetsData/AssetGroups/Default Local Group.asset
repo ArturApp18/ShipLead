@@ -16,7 +16,43 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 09ce21499e78f9243a5b1fe19bb1a63f
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 17c052f7390e6394da9d9e2a0f29f966
+    m_Address: BrownBug
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 07bd7a81a0773504ca1966a3fc4d96fb
+    m_Address: WildFlower
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 22bc477a7c3b9d541a9cfbc8b18c21b8
+    m_Address: Loot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 08b46f8cd1cb2f848bb041ef30eec8ec
+    m_Address: SpawnPoint
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ee4a6340e62ed45438580a9047e49089
+    m_Address: Hero
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 81f5fa1343a3bb145a0148b90bb626a2
+    m_Address: Hud
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dddfbdd1601384d419ae0a0144495bca
+    m_Address: LevelTransferTrigger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e7094eeb0ea7a84409d87fa3b4f2e12b
+    m_Address: SaveTrigger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 374a44999ab38cb4ebf4812858d0274c
+    m_Address: UIRoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3b9d3a510ececd843892e9a4b0390ed5, type: 2}
   m_SchemaSet:

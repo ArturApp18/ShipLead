@@ -7,6 +7,7 @@ namespace CodeBase.Logic
     Attack,
     Walking,
     Hit,
+    Jumping,
     Died,
   }
 }

@@ -13,9 +13,9 @@ namespace CodeBase.Hero
 		
 		private IInputService _inputService;
 
-		private void Awake()
+		public void Construct(IInputService inputService)
 		{
-			_inputService = AllServices.Container.Single<IInputService>();
+			_inputService = inputService;
 		}
 		private void Update()
 		{

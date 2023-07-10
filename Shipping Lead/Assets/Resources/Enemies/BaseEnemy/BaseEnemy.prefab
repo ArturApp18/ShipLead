@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 8538438639062456293}
   - component: {fileID: 5493865034118923575}
   - component: {fileID: 7903615387365181102}
+  - component: {fileID: 1635002891087207330}
   m_Layer: 0
   m_Name: BaseEnemy
   m_TagString: Untagged
@@ -121,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rigidbody: {fileID: 877672779}
+  _enemyRotate: {fileID: 1635002891087207330}
 --- !u!114 &4219074806407445637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +226,9 @@ MonoBehaviour:
   _move: {fileID: 9177453345792776484}
   _attack: {fileID: 3773478930914408582}
   _aggro: {fileID: 6214537097654861577}
-  DeathFx: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
+  _deathFx: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
+  _enemyObject: {fileID: 1166578335002431531}
+  _deathLayer: 11
   _destroyTimer: 3
 --- !u!114 &7903615387365181102
 MonoBehaviour:
@@ -240,6 +244,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 4553414037433397325}
   _rigidbody: {fileID: 877672779}
+--- !u!114 &1635002891087207330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166578335002431531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e3906d4c9c4b45a19ef0c3adc87f4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isFacingRight: 0
 --- !u!1 &2485223213796826573
 GameObject:
   m_ObjectHideFlags: 0

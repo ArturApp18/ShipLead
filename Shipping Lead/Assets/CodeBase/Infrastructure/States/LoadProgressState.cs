@@ -46,6 +46,15 @@ namespace CodeBase.Infrastructure.States
 			progress.HeroState.MaxHP = heroData.Hp;
 			progress.HeroStats.Damage = heroData.Damage;
 			progress.HeroStats.DamageRadius = heroData.Cleavage;
+			progress.HeroStats.MaxMovementSpeed = heroData.MaxMoveSpeed;
+			progress.HeroStats.MovementAccelaration = heroData.MovementAccelaration;
+			progress.HeroStats.MovementDeacclaration = heroData.MovementDeacclaration;
+			progress.HeroStats.JumpForce = heroData.JumpForce;
+			progress.HeroStats.AirLinearDrag = heroData.AirLinearDrag;
+			progress.HeroStats.FallMultiplier = heroData.FallMultiplier;
+			progress.HeroStats.LowMultiplier = heroData.LowJumpMultiplier;
+			progress.HeroStats.ExtraJumps = heroData.ExtraJumps;
+			progress.HeroStats.VelocityPower = heroData.VelocityPower;
 			progress.HeroState.ResetHP();
 
 			return progress;

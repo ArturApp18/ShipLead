@@ -37,7 +37,7 @@ namespace CodeBase.Infrastructure.States
 
 		public void Update()
 		{
-			Debug.Log("lox");
+	
 		}
 
 		private void EnterLoadLevel() =>
@@ -47,36 +47,45 @@ namespace CodeBase.Infrastructure.States
 		{
 			RegisterStaticData();
 			RegisterRandomService();
-			RegisterAdService();
-			
+			RegisterAdsService();
+
 			_services.RegisterSingle<IGameStateMachine>(_stateMachine);
+			RegisterAssetProvider();
 			_services.RegisterSingle(InputServices());
-			_services.RegisterSingle<IAssets>(new AssetsProvider());
 			_services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
 			_services.RegisterSingle<IUIFactory>(new UIFactory(
-				_services.Single<IAssets>(), 
-				_services.Single<IStaticDataService>(), 
-				_services.Single<IPersistentProgressService>(), 
+				_services.Single<IAssetsProvider>(),
+				_services.Single<IStaticDataService>(),
+				_services.Single<IPersistentProgressService>(),
 				_services.Single<IAdsService>()
-				));
+			));
+
 			_services.RegisterSingle<IWindowService>(new WindowService(_services.Single<IUIFactory>()));
 			_services.RegisterSingle<IGameFactory>(new GameFactory(
-				_services.Single<IAssets>(), 
-				_services.Single<IStaticDataService>(), 
+				_services.Single<IAssetsProvider>(),
+				_services.Single<IStaticDataService>(),
 				_services.Single<IRandomService>(),
-				_services.Single<IPersistentProgressService>(), 
+				_services.Single<IPersistentProgressService>(),
 				_services.Single<IWindowService>(),
+				_services.Single<IInputService>(),
 				_stateMachine
-				));
+			));
 
 			_services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
 		}
 
-		private void RegisterAdService()
+		private void RegisterAssetProvider()
 		{
-			AdsService adsService = new AdsService();
+			AssetsProvider assetProvider = new AssetsProvider();
+			_services.RegisterSingle<IAssetsProvider>(assetProvider);
+			assetProvider.Initialize();
+		}
+
+		private void RegisterAdsService()
+		{
+			IAdsService adsService = new AdsService();
 			adsService.Initialize();
-			_services.RegisterSingle<IAdsService>(adsService);
+			_services.RegisterSingle(adsService);
 		}
 
 		private void RegisterRandomService()

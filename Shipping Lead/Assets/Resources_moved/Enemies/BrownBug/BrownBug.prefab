@@ -92,6 +92,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 877672779, guid: 669d5622850618848b18e3cb010c8970, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 877672779, guid: 669d5622850618848b18e3cb010c8970, type: 3}
+      propertyPath: m_UseAutoMass
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 877672779, guid: 669d5622850618848b18e3cb010c8970, type: 3}
       propertyPath: m_SleepingMode
       value: 1
       objectReference: {fileID: 0}
@@ -131,10 +139,18 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Mob
       objectReference: {fileID: 0}
+    - target: {fileID: 1600084338495558431, guid: 669d5622850618848b18e3cb010c8970, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 4eda7d6040cfcd446b64028721650c51, type: 2}
     - target: {fileID: 2763393875242643091, guid: 669d5622850618848b18e3cb010c8970, type: 3}
       propertyPath: TriggerObserver
       value: 
       objectReference: {fileID: 8745592383730410509}
+    - target: {fileID: 3773478930914408582, guid: 669d5622850618848b18e3cb010c8970, type: 3}
+      propertyPath: EffectiveDistance
+      value: 3.77
+      objectReference: {fileID: 0}
     - target: {fileID: 3951585990022702776, guid: 669d5622850618848b18e3cb010c8970, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -191,6 +207,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4099245317374066691, guid: 669d5622850618848b18e3cb010c8970, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4486813532280306893, guid: 669d5622850618848b18e3cb010c8970, type: 3}
       propertyPath: _max
       value: 4
@@ -206,6 +226,14 @@ PrefabInstance:
     - target: {fileID: 4486813532280306893, guid: 669d5622850618848b18e3cb010c8970, type: 3}
       propertyPath: knockBackForceUp
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5493865034118923575, guid: 669d5622850618848b18e3cb010c8970, type: 3}
+      propertyPath: _enemyObject
+      value: 
+      objectReference: {fileID: 7717589784063879740}
+    - target: {fileID: 5493865034118923575, guid: 669d5622850618848b18e3cb010c8970, type: 3}
+      propertyPath: _deathLayer.m_Bits
+      value: 2048
       objectReference: {fileID: 0}
     - target: {fileID: 6520723215108168440, guid: 669d5622850618848b18e3cb010c8970, type: 3}
       propertyPath: m_RootOrder
@@ -224,6 +252,11 @@ PrefabInstance:
 --- !u!4 &5619433857440128175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3951585990022702776, guid: 669d5622850618848b18e3cb010c8970, type: 3}
+  m_PrefabInstance: {fileID: 8875160915506575895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7717589784063879740 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1166578335002431531, guid: 669d5622850618848b18e3cb010c8970, type: 3}
   m_PrefabInstance: {fileID: 8875160915506575895}
   m_PrefabAsset: {fileID: 0}
 --- !u!70 &7862796689244072200 stripped

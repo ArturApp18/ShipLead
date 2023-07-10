@@ -15,4 +15,13 @@ MonoBehaviour:
   Hp: 350
   Damage: 100
   Cleavage: 0.5
+  MovementAccelaration: 7
+  MovementDeacclaration: 7
+  AirLinearDrag: 8
+  MaxMoveSpeed: 4.5
+  JumpForce: 17.5
+  FallMultiplier: 8
+  LowJumpMultiplier: 5
+  ExtraJumps: 1
+  VelocityPower: 1.1
   Prefab: {fileID: 0}

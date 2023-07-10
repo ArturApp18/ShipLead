@@ -8,12 +8,15 @@ namespace CodeBase.Enemy
 	[RequireComponent(typeof(EnemyAnimator), typeof(EnemyHealth))]
 	public class EnemyDeath : MonoBehaviour
 	{
+		private const string DeadLayer = "DeadEnemy";
 		[SerializeField] private EnemyAnimator _animator;
 		[SerializeField] private EnemyHealth _health;
 		[SerializeField] private MoveToHero _move;
 		[SerializeField] private EnemyAttack _attack;
 		[SerializeField] private GameObject _aggro;
-		[SerializeField] private GameObject DeathFx;
+		[SerializeField] private GameObject _deathFx;
+		[SerializeField] private GameObject _enemyObject;
+		[SerializeField] private int _deathLayer;
 		[SerializeField] private float _destroyTimer;
 
 		public event Action Happend;
@@ -37,7 +40,7 @@ namespace CodeBase.Enemy
 		private void Die()
 		{
 			_health.HealthChanged -= HealthChanged;
-
+			_enemyObject.layer = _deathLayer;
 			StopFollowing();
 
 			_animator.PlayDeath();
@@ -56,7 +59,7 @@ namespace CodeBase.Enemy
 		}
 
 		private void SpawnDeathFx() =>
-			Instantiate(DeathFx, transform.position, Quaternion.identity);
+			Instantiate(_deathFx, transform.position, Quaternion.identity);
 
 		private IEnumerator DestroyTimer()
 		{

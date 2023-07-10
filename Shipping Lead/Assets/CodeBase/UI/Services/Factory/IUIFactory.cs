@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CodeBase.Infrastructure.Services;
 
 namespace CodeBase.UI.Services.Factory
@@ -6,7 +7,7 @@ namespace CodeBase.UI.Services.Factory
 	{
 		void CreateShop();
 		void CreateHeroStats();
-		void CreateUIRoot();
+		Task CreateUIRoot();
 	}
 
 }

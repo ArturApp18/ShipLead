@@ -7,13 +7,15 @@ namespace CodeBase.Enemy
 	public class MoveToHero : Follow
 	{
 		private const float MinimalDistance = 1.3f;
-		
+
 		public Rigidbody2D Rigidbody;
 
 		private Transform _heroTransform;
 		private IGameFactory _gameFactory;
 
 		private float _movementSpeed;
+		[SerializeField]
+		private EnemyRotate _enemyRotate;
 		public float MovementSpeed
 		{
 			get
@@ -30,7 +32,6 @@ namespace CodeBase.Enemy
 		public void Construct(Transform heroTransform) =>
 			_heroTransform = heroTransform;
 
-		
 
 		private void Update()
 		{
@@ -43,23 +44,28 @@ namespace CodeBase.Enemy
 			if (ChooseSide())
 			{
 				Rigidbody.velocity = new Vector2(MovementSpeed, Rigidbody.velocity.y);
+				if (!_enemyRotate.IsFacingRight)
+					_enemyRotate.Flip();
 			}
 			else
 			{
 				Rigidbody.velocity = new Vector2(-MovementSpeed, Rigidbody.velocity.y);
+				if (_enemyRotate.IsFacingRight)
+					_enemyRotate.Flip();
 			}
 		}
 
 		private bool ChooseSide() =>
 			transform.position.x <= _heroTransform.position.x;
-		
+
 
 		private bool Initialized() =>
 			_heroTransform != null;
-		
+
 
 		private bool HeroNotReached() =>
 			Vector3.Distance(transform.position, _heroTransform.position) >= MinimalDistance;
 
 	}
+
 }

@@ -20,7 +20,7 @@ namespace CodeBase.Enemy
 		
 		private bool _picked;
 
-		private string _id;
+		public string Id;
 		public bool Picked
 		{
 			get
@@ -33,10 +33,9 @@ namespace CodeBase.Enemy
 			}
 		}
 
-		public void Construct(WorldData worldData, string id)
+		public void Construct(WorldData worldData)
 		{
 			_worldData = worldData;
-			_id = id;
 		}
 
 		public void Initialize(Loot loot)
@@ -87,9 +86,9 @@ namespace CodeBase.Enemy
 		{
 			LootPieceDataDictionary lootPiecesOnScene = progress.WorldData.LootData.LootPiecesOnScene;
 
-			if (lootPiecesOnScene.Dictionary.ContainsKey(_id))
+			if (lootPiecesOnScene.Dictionary.ContainsKey(Id))
 			{
-				lootPiecesOnScene.Dictionary.Remove(_id);
+				lootPiecesOnScene.Dictionary.Remove(Id);
 			}
 		}
 
@@ -100,9 +99,9 @@ namespace CodeBase.Enemy
 
 			LootPieceDataDictionary lootPiecesOnScene = progress.WorldData.LootData.LootPiecesOnScene;
 
-			if (!lootPiecesOnScene.Dictionary.ContainsKey(_id))
+			if (!lootPiecesOnScene.Dictionary.ContainsKey(Id))
 				lootPiecesOnScene.Dictionary
-					.Add(_id, new LootPieceData(transform.position.AsVectorData(), _loot));
+					.Add(Id, new LootPieceData(transform.position.AsVectorData(), _loot));
 		}
 	}
 

@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: WildFlower
   m_EditorClassIdentifier: 
   MonsterTypeId: 10
+  MaxLoot: 2
+  MinLoot: 18
   Hp: 58
   Damage: 12.2
   MoveSpeed: 9.7
   EffeectiveDistance: 0.638
   Cleavage: 0.638
-  Prefab: {fileID: 6451676549032221556, guid: 07bd7a81a0773504ca1966a3fc4d96fb, type: 3}
+  PrefabReference:
+    m_AssetGUID: 07bd7a81a0773504ca1966a3fc4d96fb
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

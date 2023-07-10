@@ -7,6 +7,9 @@ namespace CodeBase.Infrastructure.Services.Input
 		Vector2 Axis { get; }
 
 		bool IsAttackButtonUp();
+		bool IsJumpButtonDown();
+		bool IsJumpButtonUp();
+		bool IsJumpButton();
 	}
 
 }

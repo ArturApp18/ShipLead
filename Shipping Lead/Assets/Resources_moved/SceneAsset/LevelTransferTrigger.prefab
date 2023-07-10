@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9121202267565121155}
   - component: {fileID: 1681025948958847}
-  - component: {fileID: 892102062594975184}
   - component: {fileID: 6859195339564149360}
   m_Layer: 0
   m_Name: LevelTransferTrigger
@@ -60,19 +59,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &892102062594975184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4331582000679056609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 014d593c684343fc879b7e35e5593148, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Id: Jungle_8aa4b8dd-cff7-431f-b5a4-d2f6e9f0e96f
 --- !u!114 &6859195339564149360
 MonoBehaviour:
   m_ObjectHideFlags: 0

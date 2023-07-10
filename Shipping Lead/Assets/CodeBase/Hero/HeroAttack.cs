@@ -20,10 +20,13 @@ namespace CodeBase.Hero
 		private Collider2D[] _hits = new Collider2D[3];
 		private Stats _stats;
 
+
+		public void Construct(IInputService inputService)
+		{
+			_input = inputService;
+		}
 		private void Awake()
 		{
-			_input = AllServices.Container.Single<IInputService>();
-
 			_layerMask = 1 << LayerMask.NameToLayer("Hittable");
 		}
 

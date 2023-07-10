@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CodeBase.CameraLogic;
 using CodeBase.Data;
 using CodeBase.Enemy;
@@ -18,7 +19,7 @@ namespace CodeBase.Infrastructure.States
 {
 	public class LoadLevelState : IPayloadedState<string>
 	{
-		
+
 		private const string SaveTrigger = "SaveTrigger";
 		private const string EnemySpawner = "EnemySpawners";
 		private const string Loot = "Loot";
@@ -46,94 +47,90 @@ namespace CodeBase.Infrastructure.States
 			_uiFactory = uiFactory;
 		}
 
-		public void Update()
-		{
-			
-		}
+		public void Update() { }
 
 		public void Enter(string sceneName)
 		{
 			_loadingCurtain.Show();
 			_gameFactory.Cleanup();
+			_gameFactory.WarmUp();
 			_sceneLoader.Load(sceneName, OnLoaded);
+		}
+
+		private async void OnLoaded()
+		{
+			await InitUIRoot();
+			await InitGameWorld();
+			InformProgressReaders();
+
+			_gameStateMachine.Enter<GameLoopState>();
 		}
 
 		public void Exit() =>
 			_loadingCurtain.Hide();
 
-		private void InitHud(GameObject hero)
+		private async Task InitHud(GameObject hero)
 		{
-			GameObject hud = _gameFactory.CreateHud();
+			GameObject hud = await _gameFactory.CreateHud();
 
 			hud.GetComponentInChildren<ActorUI>()
 				.Construct(hero.GetComponent<HeroHealth>());
 		}
 
-		private void InitGameWorld()
+		private async Task InitGameWorld()
 		{
 			LevelStaticData levelData = GetLevelStaticData();
-			InitSpawners(levelData);
-			InitSaveTriggers(levelData);
-			InitLevelTransfers(levelData);
-			InitLoot();
-			GameObject hero = InitHero(levelData);
-			InitHud(hero);
+			await InitSpawners(levelData);
+			await InitSaveTriggers(levelData);
+			await InitLevelTransfers(levelData);
+			await InitLoot();
+			GameObject hero = await InitHero(levelData);
+			await InitHud(hero);
+			
 			CameraFollow(hero);
 		}
 
-		private GameObject InitHero(LevelStaticData levelData) =>
-			_gameFactory.CreateHero(levelData.InitialHeroPosition);
+		private async Task<GameObject> InitHero(LevelStaticData levelData) =>
+			await _gameFactory.CreateHero(levelData.InitialHeroPosition);
 
-		private void InitLoot()
+		private async Task InitLoot()
 		{
 			foreach (KeyValuePair<string, LootPieceData> item in _progressService.Progress.WorldData.LootData.LootPiecesOnScene.Dictionary)
 			{
-				LootPiece lootPiece = _gameFactory.CreateLoot();
+				LootPiece lootPiece = await _gameFactory.CreateLoot();
 				lootPiece.GetComponent<UniqueId>().Id = item.Key;
 				lootPiece.Initialize(item.Value.Loot);
 				lootPiece.transform.position = item.Value.Position.AsUnityVector();
 			}
 		}
 
-		private void InitSaveTriggers(LevelStaticData levelData)
+		private async Task InitSaveTriggers(LevelStaticData levelData)
 		{
-			
-			
 			foreach (SaveTriggerData saveTriggerData in levelData.SaveTriggers)
 			{
-				SaveTrigger saveTrigger = _gameFactory.CreateSaveTrigger(saveTriggerData.Position,saveTriggerData.Id);
+				SaveTrigger saveTrigger = await _gameFactory.CreateSaveTrigger(saveTriggerData.Position, saveTriggerData.Id);
 				saveTrigger.Construct(_saveLoadService);
 			}
 		}
 
-		private void InitLevelTransfers(LevelStaticData levelData)
+		private async Task InitLevelTransfers(LevelStaticData levelData)
 		{
 			foreach (LevelTransferTriggerData levelTransfer in levelData.LevelTransfers)
 			{
-				LevelTransferTrigger levelTransferTrigger = _gameFactory.CreateLevelTransferTrigger(levelTransfer.Position, levelTransfer.Id, levelTransfer.TransferTo);
+				await _gameFactory.CreateLevelTransferTrigger(levelTransfer.Position, levelTransfer.Id, levelTransfer.TransferTo);
 			}
 		}
 
-		private void InitSpawners(LevelStaticData levelData)
+		private async Task InitSpawners(LevelStaticData levelData)
 		{
-
 			foreach (EnemySpawnerData spawnerData in levelData.EnemySpawners)
 			{
-				_gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
+				await _gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
 			}
 		}
 
-		private void OnLoaded()
-		{
-			InitUIRoot();
-			InitGameWorld();
-			InformProgressReaders();
-
-			_gameStateMachine.Enter<GameLoopState>();
-		}
-
-		private void InitUIRoot() =>
-			_uiFactory.CreateUIRoot();
+		private async Task InitUIRoot() =>
+			await _uiFactory.CreateUIRoot();
 
 		private void InformProgressReaders()
 		{

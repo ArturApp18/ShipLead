@@ -14,14 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelKey: Main
   EnemySpawners:
+  - Id: Main_fedf3891-23bb-4db6-9fa7-31419b6ef6da
+    MonsterTypeId: 0
+    Position: {x: -15.32, y: 2.19}
   - Id: SpawnMarker_cd34059d-7e35-425b-8db0-41dff9ad4b09
     MonsterTypeId: 0
-    Position: {x: -5.31, y: -1.14}
+    Position: {x: -23.04, y: 3.39}
   SaveTriggers:
-  - Position: {x: 2.75, y: -1}
+  - Position: {x: 2.75, y: 6.66}
     Id: Main_ebc8a71e-5592-4053-8f89-b9e4c3c77144
   LevelTransfers:
-  - Position: {x: 5.91, y: -1.84}
+  - Position: {x: 5.91, y: 5.95}
     Id: Jungle_74a39678-6bf5-412e-963e-5691b6e3ddeb
-    TransferTo: Jungle
-  InitialHeroPosition: {x: -0.36, y: -0.24, z: -0.026744563}
+    TransferTo: 
+  InitialHeroPosition: {x: -37.19, y: 3.5, z: -0.026744563}

@@ -10,13 +10,15 @@ namespace CodeBase.Hero
         private static readonly int AttackHash = Animator.StringToHash("Attack");
         private static readonly int  HitHash = Animator.StringToHash("Hit");
         private static readonly int DieHash = Animator.StringToHash("Die");
+        private static readonly int Jump = Animator.StringToHash("Jump");
+        private static readonly int Grounded = Animator.StringToHash("IsGrounded");
 
         private readonly int _idleStateHash = Animator.StringToHash("Idle");
         private readonly int _idleStateFullHash = Animator.StringToHash("Base Layer.Idle");
         private readonly int _attackStateHash = Animator.StringToHash("Attack Normal");
         private readonly int _walkingStateHash = Animator.StringToHash("Run");
         private readonly int _deathStateHash = Animator.StringToHash("Die");
-
+        private readonly int _jumpingStateHash = Animator.StringToHash("Jump");
         public event Action<AnimatorState> StateEntered;
         public event Action<AnimatorState> StateExited;
 
@@ -24,10 +26,12 @@ namespace CodeBase.Hero
 
         public Animator Animator;
         public Rigidbody2D Rigidbody;
+        public bool IsGrounded;
 
         private void Update()
         {
             Animator.SetFloat(MoveHash, Rigidbody.velocity.magnitude, 0.1f, Time.deltaTime);
+            Animator.SetBool(Grounded, IsGrounded);
         }
 
         public bool IsAttacking => State == AnimatorState.Attack;
@@ -40,6 +44,11 @@ namespace CodeBase.Hero
         public void PlayDeath() => Animator.SetTrigger(DieHash);
 
         public void ResetToIdle() => Animator.Play(_idleStateHash, -1);
+
+        public void PlayJump()
+        {
+            Animator.SetTrigger(Jump);
+        }
 
         public void EnteredState(int stateHash)
         {
@@ -59,6 +68,8 @@ namespace CodeBase.Hero
                 state = AnimatorState.Attack;
             else if (stateHash == _walkingStateHash)
                 state = AnimatorState.Walking;
+            else if (stateHash == _jumpingStateHash)
+                state = AnimatorState.Jumping;
             else if (stateHash == _deathStateHash)
                 state = AnimatorState.Died;
             else
@@ -66,5 +77,6 @@ namespace CodeBase.Hero
 
             return state;
         }
+
     }
 }

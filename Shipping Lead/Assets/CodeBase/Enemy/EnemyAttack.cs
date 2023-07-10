@@ -86,7 +86,7 @@ namespace CodeBase.Enemy
 		}
 
 		private bool CanAttack() =>
-			!_attackIsActive && !_isAttacking && CooldownIsUp();
+			_attackIsActive && !_isAttacking && CooldownIsUp();
 
 		private bool CooldownIsUp() =>
 			_attackCoolDown <= 0f;

@@ -1,3 +1,4 @@
+using System;
 using CodeBase.Data;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.Input;
@@ -11,34 +12,49 @@ namespace CodeBase.Hero
 	{
 		[SerializeField] private Rigidbody2D _rigidbody;
 		[SerializeField] private CapsuleCollider2D _heroCollider;
-		[SerializeField] private float _movementSpeed;
+		[SerializeField] private HeroCollision _heroCollision;
 
+		private Stats _stats;
 		private IInputService _inputService;
-		private Camera _camera;
 
-		private void Awake()
-		{
-			_inputService = AllServices.Container.Single<IInputService>();
-		}
+		private float _horizontalMove;
+		
+		[SerializeField] private bool _canMove;
 
-		private void Start()
+		public void Construct(IInputService inputService, Stats stats)
 		{
-			_camera = Camera.main;
+			_inputService = inputService;
+			_stats = stats;
 		}
+		
 
 		private void Update()
 		{
-			Vector2 movementVector = Vector2.zero;
-
-			if (_inputService.Axis.sqrMagnitude > Constants.Epsilon)
+			if (_canMove)
 			{
-				movementVector = _camera.transform.TransformDirection(_inputService.Axis);
-				movementVector.Normalize();
+				_horizontalMove = _inputService.Axis.x;
+				/*if (_inputService.Axis.x > 0.1 || _inputService.Axis.x < -0.1)
+				{
+					_animator.StartRun();
+				}
+				else
+				{
+					_animator.StopRun();
+				}*/
 			}
+		}
 
-			movementVector += Physics2D.gravity;
-			
-			_rigidbody.velocity  = new Vector2(_movementSpeed * movementVector.x * Time.deltaTime, _rigidbody.velocity.y);
+		private void FixedUpdate()
+		{
+			if (_canMove)
+			{
+				float targetSpeed = _horizontalMove * _stats.MaxMovementSpeed;
+				float speedDif = targetSpeed - _rigidbody.velocity.x;
+				float accelRate = ( Mathf.Abs(_stats.MaxMovementSpeed) > 0.01f ) ? _stats.MovementAccelaration : _stats.MovementDeacclaration;
+				float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, _stats.VelocityPower) * Mathf.Sign(speedDif);
+				_rigidbody.AddForce(movement * Vector2.right, ForceMode2D.Force);
+
+			}
 		}
 
 
@@ -47,6 +63,8 @@ namespace CodeBase.Hero
 
 		public void LoadProgress(PlayerProgress progress)
 		{
+			_stats = progress.HeroStats;
+
 			if (CurrentLevel() == progress.WorldData.PositionOnLevel.Level)
 			{
 				Vector3Data savedPosition = progress.WorldData.PositionOnLevel.Position;
